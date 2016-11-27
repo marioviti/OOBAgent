@@ -1,4 +1,4 @@
 # OOBAgent
 C programming Shell scripting
 
-[embed]relazione.pdf[/embed]
+https://github.com/marioviti/OOBAgent/blob/master/relazione.pdf
