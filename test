@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "Inizio test"
+
+./supervisor 8 1>>supervisor_out &
+
+trap 'kill -INT $(pidof supervisor);' INT 
+
+sleep 1
+
+for ((i=0; i < 10; i++)); do
+	sleep 1
+	./client 5 8 20 1>>client_out &
+	./client 5 8 20 1>>client_out &
+done
+
+for (( i = 0; i < 6; i++ )); do
+	kill -INT $(pidof supervisor)
+	sleep 10
+done
+
+kill -INT $(pidof supervisor)
+kill -INT $(pidof supervisor)
+
+sleep 0.1
+#può capitare che l'ultima scrittura non avvenga in tempo, ho testato su
+#più macchine ed è risultato che una tantum succeda ma solo al primo 
+#test, i successivi non danno problemi.
+#Non ho trovato la fonte di questo bug in tempo per la consegna
+#e ho applicato questa orrenda patch.
+./misura supervisor_out client_out
